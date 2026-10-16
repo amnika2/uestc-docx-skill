@@ -1,0 +1,21 @@
+{
+  "page": {"width": 11906, "height": 16838, "margin": 1701, "header": 1134, "footer": 1134},
+  "layout": {"duplexDefault": false, "bodyHeader": "chapter"},
+  "body": {"font": "SimSun", "latin": "Times New Roman", "size": 12, "line": 20, "before": 0, "after": 0, "firstLine": 480},
+  "headings": [
+    {"size": 15, "before": 24, "after": 18, "alignment": "center"},
+    {"size": 14, "before": 18, "after": 6, "alignment": "left"},
+    {"size": 14, "before": 12, "after": 6, "alignment": "left"},
+    {"size": 12, "before": 12, "after": 6, "alignment": "left"}
+  ],
+  "figureCaption": {"size": 10.5, "before": 6, "after": 12},
+  "tableCaption": {"size": 10.5, "before": 12, "after": 6},
+  "table": {"size": 10.5, "border": 0.5, "line": 20, "style": "grid"},
+  "formula": {"size": 12, "numberFont": "Times New Roman", "line": "single", "before": 6, "after": 6, "sideWidth": 850},
+  "toc": {"size": 12, "line": 20},
+  "reference": {"size": 10.5, "line": 20, "hanging": 360},
+  "header": {"size": 10.5, "border": 0.5},
+  "footer": {"size": 9},
+  "footnote": {"size": 9, "line": "single"},
+  "code": {"font": "Consolas", "size": 10.5, "line": 14, "before": 0, "after": 0}
+}

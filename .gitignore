@@ -1,0 +1,12 @@
+node_modules/
+**/__pycache__/
+*.py[cod]
+
+.venv/
+.env
+.env.*
+
+qa/
+output/
+*.tmp
+~$*
