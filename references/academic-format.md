@@ -24,7 +24,7 @@
 | 脚注 | 宋体 / Times New Roman | 9 pt | 单倍 | 0 / 0 pt | 两端对齐，悬挂缩进 |
 | 代码 | 中文宋体，英文数字 Consolas | 10.5 pt | 固定 14 pt | 0 / 0 pt | 左对齐，保留源文件缩进 |
 
-相邻标题之间没有文字时，第二个标题的段前设为 0。不要插入空段落来实现上述间距。封面按文档类型独立处理；参考规范的封面中文为宋体三号 16 pt 加粗，1.5 倍行距。
+相邻标题之间没有文字时，第二个标题的段前设为 0。不要插入空段落来实现上述间距。默认封面复用用户指定的课程设计报告模板，保留其字体、字号、间距和图像位置，见 [封面使用说明](default-cover.md)。
 
 页面为 A4（11906×16838 DXA），四边 1701 DXA（3 cm），页眉页脚距边界 1134 DXA（2 cm），正文宽度为 8504 DXA。更换边距时，表格和公式宽度重新计算。表格默认 0.5 pt 网格，三线表可显式选择。
 
@@ -35,7 +35,7 @@ const {AcademicBuilder, createAcademicDocument, packAcademicDocument} = require(
 const b = new AcademicBuilder();
 const doc = createAcademicDocument({
   title: '具体文档题目',
-  cover: [b.text('具体文档题目', {style: 'Title'})],
+  coverFields: {college: '', major: '', studentId: '', author: '', course: ''},
   front: [
     {title: '摘要', children: [b.frontHeading('摘 要'), b.body('摘要内容')]},
     {title: '目录', children: [b.frontHeading('目 录'), b.toc()]}

@@ -146,7 +146,9 @@ const footer=()=>new Footer({children:[new Paragraph({style:'Footer',children:[n
 const blankFooter=()=>new Footer({children:[]});
 const page=(number=null)=>({size:{width:profile.page.width,height:profile.page.height},margin:{top:profile.page.margin,bottom:profile.page.margin,left:profile.page.margin,right:profile.page.margin,header:profile.page.header,footer:profile.page.footer},...(number?{pageNumbers:number}:{})});
 
-function createAcademicDocument({title,creator='付烁',cover=[],front=[],body=[],bodyHeader=title,duplex=profile.layout.duplexDefault}){
+function createAcademicDocument({title,creator='付烁',cover,coverTemplate=profile.cover.default,coverFields={},front=[],body=[],bodyHeader=title,duplex=profile.layout.duplexDefault}){
+  const defaultCover = cover===undefined && coverTemplate==='uestc-course';
+  cover = cover ?? (defaultCover?[new Paragraph({children:[]})]:[]);
   const sections=[];
   if(cover.length)sections.push({properties:{page:page(),type:SectionType.NEXT_PAGE},headers:{default:blankHeader(),even:blankHeader(),first:blankHeader()},footers:{default:blankFooter(),even:blankFooter(),first:blankFooter()},children:normalizeFlow(cover)});
   front.forEach((f,i)=>sections.push({properties:{page:page({formatType:NumberFormat.UPPER_ROMAN,...(i===0?{start:1}:{})}),type:duplex?SectionType.ODD_PAGE:SectionType.NEXT_PAGE},headers:{default:header(f.title),even:header(f.title)},footers:{default:footer(),even:footer()},children:normalizeFlow(f.children)}));
@@ -158,7 +160,9 @@ function createAcademicDocument({title,creator='付烁',cover=[],front=[],body=[
     const bodySectionHeader=lead?.academicNumbered?chapterHeader(lead.academicTitle||bodyHeader):header(lead?.academicTitle||bodyHeader);
     sections.push({properties:{page:page({formatType:NumberFormat.DECIMAL,...(i===0?{start:1}:{})}),type:i===0&&duplex?SectionType.ODD_PAGE:SectionType.NEXT_PAGE},headers:{default:bodySectionHeader},footers:{default:footer()},children:normalizeFlow(children)});
   });
-  return new Document({creator,lastModifiedBy:creator,title,description:title,features:{updateFields:true},compatibility:{suppressSpacingAtTopOfPage:false,suppressSpBfAfterPgBrk:false},evenAndOddHeaderAndFooters:false,styles:styles(),numbering:numbering(),sections});
+  const document=new Document({creator,lastModifiedBy:creator,title,description:title,features:{updateFields:true},compatibility:{suppressSpacingAtTopOfPage:false,suppressSpBfAfterPgBrk:false},evenAndOddHeaderAndFooters:false,styles:styles(),numbering:numbering(),sections});
+  if(defaultCover)document.academicDefaultCover={title,...coverFields};
+  return document;
 }
 async function packAcademicDocument(doc){
   const buffer=await d.Packer.toBuffer(doc);
@@ -172,6 +176,7 @@ async function packAcademicDocument(doc){
   }
   const documentFile=zip.file('word/document.xml');
   if(documentFile)zip.file('word/document.xml',normalizeSectionBoundaries(await documentFile.async('string')));
+  if(doc.academicDefaultCover)await require('./default_cover').applyDefaultCover(zip,doc.academicDefaultCover);
   return zip.generateAsync({type:'nodebuffer',compression:'DEFLATE'});
 }
 

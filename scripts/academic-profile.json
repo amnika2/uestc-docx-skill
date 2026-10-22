@@ -1,6 +1,7 @@
 {
   "page": {"width": 11906, "height": 16838, "margin": 1701, "header": 1134, "footer": 1134},
   "layout": {"duplexDefault": false, "bodyHeader": "chapter"},
+  "cover": {"default": "uestc-course", "asset": "assets/uestc-course-cover.docx"},
   "body": {"font": "SimSun", "latin": "Times New Roman", "size": 12, "line": 20, "before": 0, "after": 0, "firstLine": 480},
   "headings": [
     {"size": 15, "before": 24, "after": 18, "alignment": "center"},

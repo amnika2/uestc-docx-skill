@@ -8,12 +8,12 @@ const stripHeading=t=>t.replace(/^(?:第[一二三四五六七八九十百\d]+�
 const stripCaption=t=>t.replace(/^[图表]\s*[A-Z\d]+(?:[-.]\d+)?\s*/,'').trim();
 function parseMarkdown(source,baseDir=process.cwd()){
   const b=new AcademicBuilder();const lines=source.replace(/\r/g,'').split('\n');
-  const cover=[],front=[],body=[];let target=body,title='中文学术报告',reference=false;
+  const front=[],body=[];let target=body,title='中文学术报告',reference=false;
   let i=0;
   while(i<lines.length){
     const raw=lines[i],t=raw.trim();
     if(!t || t==='---'){i++;continue;}
-    if(/^#\s+/.test(t)){title=t.replace(/^#\s+/,'');cover.push(b.text(title,{style:'Title',spacing:{before:1200,after:300,line:360,lineRule:d.LineRuleType.AUTO}}));i++;continue;}
+    if(/^#\s+/.test(t)){title=t.replace(/^#\s+/,'');i++;continue;}
     const h=t.match(/^(#{2,5})\s+(.+)$/);
     if(h){
       const label=h[2].trim();
@@ -69,14 +69,15 @@ function parseMarkdown(source,baseDir=process.cwd()){
     target.push(/^(?:关键词|Keywords)[:：]/.test(t)?b.text(pieces.join(' ')):b.body(pieces.join(' ')));
   }
   if(!front.some(f=>f.title==='目录') && body.filter(x=>x.academicHeadingLevel===1).length>1)front.push({title:'目录',children:[b.frontHeading('目 录'),b.toc()]});
-  return {title,cover,front,body};
+  return {title,front,body};
 }
 
 async function main(){
   const input=process.argv[2];
-  if(!input){console.error('Usage: node new_doc.js input.md [output.docx]');process.exitCode=2;return;}
+  if(!input){console.error('Usage: node new_doc.js input.md [output.docx] [cover-fields.json]');process.exitCode=2;return;}
   const file=path.resolve(input),output=path.resolve(process.argv[3]||file.replace(/\.[^.]+$/,'.docx'));
   const options=parseMarkdown(fs.readFileSync(file,'utf8'),path.dirname(file));
+  if(process.argv[4])options.coverFields=JSON.parse(fs.readFileSync(path.resolve(process.argv[4]),'utf8'));
   fs.writeFileSync(output,await packAcademicDocument(createAcademicDocument(options)));
   console.log(output);
 }

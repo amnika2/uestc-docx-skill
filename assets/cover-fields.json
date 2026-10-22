@@ -1,0 +1,20 @@
+{
+  "title": {
+    "width": 41
+  },
+  "college": {
+    "width": 14
+  },
+  "major": {
+    "width": 14
+  },
+  "studentId": {
+    "width": 12
+  },
+  "author": {
+    "width": 4
+  },
+  "course": {
+    "width": 16
+  }
+}
